@@ -1,5 +1,8 @@
 package webprog.ukesoppgare.datastrukogrek.oppgave2;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 class Node {
     int val;
     Node next;
@@ -19,47 +22,57 @@ class SammenkjedetListe {
     }
 
     public void leggTilVerdi(int n) {
-        storleik++;
         Node node = new Node(n);
         if(hode == null) {
             hode = node;
+            hode.next = hode;
+            storleik++;
+            return;
         }
-        else {
-            Node nn = hode;
-            while(nn!=null) {
-                if(nn.next == null) {
-                    nn.next = node;
-                    return;
-                }
-                nn = nn.next;
+        Node current = hode;
+        while(true) {
+            if(current.next == hode) {
+                current.next = node;
+                node.next = hode;
+                storleik++;
+                return;
             }
+            current = current.next;
         }
+
     }
 
     public boolean inneholderVerdi(int n) {
-        Node node = hode;
-        while(node!=null) {
-            if(node.val == n) return true;
-            node = node.next;
+        Node current = hode;
+        while (true) {
+            if(current.val == n) return true;
+            if(current.next == hode) break;
+            current = current.next;
         }
         return false;
     }
 
     public void slettVerdi(int n) {
-        Node node = hode;
-        if(node.val == n) {
-            hode = node.next;
-            storleik--;
-            return;
+        if(hode.val == n) {
+            Node current = hode;
+            while(true) {
+                if(current.next == hode) {
+                    current.next = hode.next;
+                    hode = current.next;
+                    return;
+                }
+                current = current.next;
+            }
         }
-        while(node.next != null) {
-            if(node.next.val == n) {
-                node.next = node.next.next;
-                storleik--;
+        Node current = hode;
+        while(true) {
+            if(current.next.val == n) {
+                current.next = current.next.next;
                 return;
             }
-            node = node.next;
+            current = current.next;
         }
+
     }
 
     public int taEnTitt() {
@@ -69,10 +82,12 @@ class SammenkjedetListe {
     public String skrivUtListe() {
         StringBuilder sb = new StringBuilder();
         sb.append("[ ");
-        Node node = hode;
-        while(node != null) {
-            sb.append(node.val+" ");
-            node = node.next;
+        Node current = hode;
+        while(true) {
+            sb.append(current.val + " ");
+            if(current.next == hode) break;
+            current = current.next;
+
         }
         sb.append("]");
         return sb.toString();
@@ -103,6 +118,23 @@ public class Oppgave2 {
         System.out.println(sl.storleik());
         System.out.println(sl.inneholderVerdi(11));
         System.out.println(sl.taEnTitt());
+        PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                if(o1.val <= o2.val) {
+                    return 0;
+                }
+                else return 1;
+            }
+        });
+        pq.add(new Node(2));
+        pq.add(new Node(5));
+        pq.add(new Node(3));
+        while(!pq.isEmpty()) {
+            System.out.println(pq.poll().val);
+        }
+
+
 
     }
 }

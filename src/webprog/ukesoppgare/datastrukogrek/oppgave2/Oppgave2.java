@@ -118,21 +118,6 @@ public class Oppgave2 {
         System.out.println(sl.storleik());
         System.out.println(sl.inneholderVerdi(11));
         System.out.println(sl.taEnTitt());
-        PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                if(o1.val <= o2.val) {
-                    return 0;
-                }
-                else return 1;
-            }
-        });
-        pq.add(new Node(2));
-        pq.add(new Node(5));
-        pq.add(new Node(3));
-        while(!pq.isEmpty()) {
-            System.out.println(pq.poll().val);
-        }
 
 
 
